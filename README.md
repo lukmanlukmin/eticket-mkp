@@ -103,6 +103,3 @@ Accessible services:
 
 - **Swagger API Docs**:  
   [http://localhost:8081/swagger/index.html#/](http://localhost:8081/swagger/index.html#/)
-
-- **Kafka UI**:  
-  [http://localhost:8082/](http://localhost:8082/)
