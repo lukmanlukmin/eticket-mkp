@@ -1,0 +1,13 @@
+Server:
+  HttpPort: ":80"
+
+Security:
+  JWTSecret: "M37tcOFM2g6zWumeHNWDqL7NfiZNVMHu"
+  JWTDuration: "5h"
+
+PostgresDBConfig:
+  DSN: "host=mkp-postgresql port=5432 user=mkpuser password=mkppassword dbname=eticket_db sslmode=disable"
+  RetryInterval: 10
+  MaxIdleConn: 10
+  MaxConn: 10
+  

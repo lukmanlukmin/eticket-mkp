@@ -1,0 +1,184 @@
+definitions:
+  payload.BaseResponse:
+    properties:
+      data: {}
+      error: {}
+      message:
+        default: berhasil
+        type: string
+      meta:
+        $ref: '#/definitions/payload.MetaResponse'
+      success:
+        type: boolean
+    type: object
+  payload.CreateTerminalPayload:
+    properties:
+      alias:
+        type: string
+      name:
+        type: string
+    type: object
+  payload.LoginCredential:
+    properties:
+      password:
+        example: password1
+        type: string
+      username:
+        example: user1
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  payload.MetaResponse:
+    properties:
+      current_page:
+        default: 1
+        type: integer
+      last_page:
+        default: 1
+        type: integer
+      limit:
+        default: 100
+        type: integer
+      next_page:
+        default: 2
+        type: integer
+      previous_page:
+        default: 0
+        type: integer
+      total_data:
+        default: 100
+        type: integer
+    type: object
+  payload.TerminalResponse:
+    properties:
+      alias:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Eticket API Documentation
+  title: Eticket API
+  version: 1.0.0-Beta
+paths:
+  /v1/authorize/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: User Credential Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/payload.LoginCredential'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Login
+      tags:
+      - auth
+  /v1/masterdata/terminals:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve list of Terminals with optional filters
+      parameters:
+      - enum:
+        - ASC
+        - DESC
+        example: ASC
+        in: query
+        name: direction
+        type: string
+      - example: created_at
+        in: query
+        name: order
+        type: string
+      - default: 1
+        example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 50
+        example: 50
+        in: query
+        maximum: 100
+        minimum: 1
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/payload.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/payload.TerminalResponse'
+                  type: array
+                meta:
+                  $ref: '#/definitions/payload.MetaResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Get list of Terminals
+      tags:
+      - Masterdata
+    post:
+      consumes:
+      - application/json
+      description: Create Terminal
+      parameters:
+      - description: Create Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/payload.CreateTerminalPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/payload.BaseResponse'
+            - properties:
+                success:
+                  type: boolean
+              type: object
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Create Terminal
+      tags:
+      - Masterdata
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

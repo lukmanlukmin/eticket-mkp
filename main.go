@@ -1,8 +1,8 @@
-// Package main
+// Package main ...
 package main
 
-import "fmt"
+import "eticket/cmd"
 
 func main() {
-	fmt.Println("Hello, World!")
+	cmd.Start()
 }
