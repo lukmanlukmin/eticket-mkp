@@ -1,6 +1,6 @@
-# 🏦 Loan Service
+# 🏦 Eticket Service
 
-Loan Service is a modular backend system for managing loans, approvals, and investments. Built using Go, PostgreSQL, and Kafka, it follows a clean and maintainable architecture.
+A backend system for Public Transportation E-Ticketing that operates 24/7 with offline-first capability. Supports prepaid card payments, tariff calculation based on entry and exit terminals, and automatic/manual data synchronization.
 
 ---
 
@@ -8,8 +8,8 @@ Loan Service is a modular backend system for managing loans, approvals, and inve
 
 - **Golang** 1.23+
 - **Fiber** as the HTTP framework
+- **Goose** (for database migrations)
 - **PostgreSQL** + sqlx + squirrel for database access
-- **Kafka** for event-driven architecture
 - **Docker Compose** for local development
 - **Gomock** and **Testify** for unit testing
 
