@@ -41,11 +41,6 @@ unit-test:
 
 test: mock unit-test
 
-pre-run: tidy mock unit-test
-
-run-http: ensure-reflex
-	reflex -r '\.go' -s -- sh -c "go run main.go serve-http"
-
 api-docs: ensure-swagger
 	swag init -g server/http_router.go --parseDependency true --parseInternal true
 
@@ -54,7 +49,15 @@ api-docs: ensure-swagger
 # goose -dir ./migrations create add_some_column sql
 
 migrate-up: ensure-goose
-	goose -dir ./migrations -table migration_version postgres "postgres://amarthauser:amarthapassword@amartha-postgresql:5432/loan_db?sslmode=disable" up
+	goose -dir ./migrations -table migration_version postgres "postgres://mkpuser:mkppassword@mkp-postgresql:5432/eticket_db?sslmode=disable" up
 
 migrate-down: ensure-goose
-	goose -dir ./migrations -table migration_version postgres "postgres://amarthauser:amarthapassword@amartha-postgresql:5432/loan_db?sslmode=disable" down
+	goose -dir ./migrations -table migration_version postgres "postgres://mkpuser:mkppassword@mkp-postgresql:5432/eticket_db?sslmode=disable" down
+
+pre-run: tidy mock unit-test
+
+run-http: ensure-reflex
+	reflex -r '\.go' -s -- sh -c "go run main.go serve-http"
+
+run-all: pre-run migrate-up run-http
+	reflex -r '\.go' -s -- sh -c "go run main.go serve-http"
