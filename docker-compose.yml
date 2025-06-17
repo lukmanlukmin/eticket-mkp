@@ -1,0 +1,50 @@
+version: '3.0'
+services:
+  mkp-eticket:
+    build:
+      context: .
+      dockerfile: Dockerfile.go.1.23
+    working_dir: /home/golang/src
+    container_name: mkp-eticket
+    depends_on:
+      - mkp-postgresql
+    volumes:
+      - ~/.ssh:/root/.ssh
+      - ./:/home/golang/src
+    ports:
+      - 8081:80
+    networks:
+      - mkp-network
+    tty: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: make run-all
+  mkp-postgresql:
+    image: bitnami/postgresql:13
+    container_name: 'mkp-postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=mkpuser
+      - POSTGRESQL_PASSWORD=mkppassword
+      - POSTGRESQL_DATABASE=eticket_db
+    ports:
+      - 5432:5432
+    volumes:
+      - mkp-postgresql-vol:/bitnami/postgresql
+    networks:
+      - mkp-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  mkp-postgresql-vol:
+    driver: local
+
+networks:
+  mkp-network:
+    driver: bridge
