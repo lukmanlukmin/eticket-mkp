@@ -21,7 +21,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    command: make run-all
+    command: make run-http
   mkp-postgresql:
     image: bitnami/postgresql:13
     container_name: 'mkp-postgresql'
